@@ -12,10 +12,41 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late double saldo =0 ;
+  String selectedCurrency = 'Dollar';
+
+  void konversi() {
+    setState(() {
+      switch (selectedCurrency) {
+        case 'Rupiah':
+        // Konversi saldo ke Rupiah
+          saldo = 15000 * 7662.5;
+          break;
+        case 'Dollar':
+        // Konversi saldo ke Dollar
+          saldo = 7662.5;
+          break;
+        case 'Euro':
+        // Konversi saldo ke Euro
+          saldo = 0.93 * 7662.5;
+          break;
+        case 'Ringgit':
+        // Konversi saldo ke Ringgit
+          saldo = 4.60 *7662.5;
+          break;
+      }
+    });
+  }
+
   @override
   void initState() {
+
     getCoinMarket();
     super.initState();
+    konversi();
+
+
+
   }
 
   @override
@@ -35,8 +66,8 @@ class _HomeState extends State<Home> {
                 Color(0xffFBC700),
               ]),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ListView(
+
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: myHeight * 0.03),
@@ -70,10 +101,34 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '\$ 7,466.20',
-                    style: TextStyle(fontSize: 35),
+                  Row(
+
+                    children: [
+                      Text(
+                        '\$${saldo.toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 35),
+                      ),
+                      DropdownButton<String>(
+                        value: selectedCurrency,
+                        onChanged: (String? newValue) {
+
+                          setState(() {
+                            selectedCurrency = newValue!;
+                            konversi();
+
+                          });
+                        },
+                        items: <String>['Rupiah', 'Dollar', 'Euro', 'Ringgit']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )
+                    ],
                   ),
+
                   Container(
                     padding: EdgeInsets.all(myWidth * 0.02),
                     height: myHeight * 0.05,
@@ -140,6 +195,7 @@ class _HomeState extends State<Home> {
                     height: myHeight * 0.02,
                   ),
                   Container(
+
                     height: myHeight * 0.36,
                     child: isRefreshing == true
                         ? Center(
@@ -160,7 +216,7 @@ class _HomeState extends State<Home> {
                             : ListView.builder(
                                 itemCount: 4,
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+
                                 itemBuilder: (context, index) {
                                   return Item(
                                     item: coinMarket![index],
@@ -216,9 +272,7 @@ class _HomeState extends State<Home> {
                                 ),
                     ),
                   ),
-                  SizedBox(
-                    height: myHeight * 0.01,
-                  ),
+
                 ],
               ),
             )

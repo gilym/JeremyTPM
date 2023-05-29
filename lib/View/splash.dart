@@ -1,4 +1,5 @@
 import 'package:crypto/View/navBar.dart';
+import 'package:crypto/login.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -50,7 +51,7 @@ class _SplashState extends State<Splash> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NavBar()));
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
                   child: Container(
                     decoration: BoxDecoration(

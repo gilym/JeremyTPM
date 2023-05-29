@@ -1,5 +1,8 @@
+import 'package:crypto/login.dart';
 import 'package:flutter/material.dart';
 
+import '../kalender.dart';
+import '../profile.dart';
 import 'anotherPage.dart';
 import 'home.dart';
 
@@ -15,10 +18,18 @@ class _NavBarState extends State<NavBar> {
 
   List<Widget> pages = [
     Home(),
-    AnotherPage(),
-    AnotherPage(),
-    AnotherPage(),
+    LiveCalendarMenu(),
+    ProfilePage(),
+    Container()
   ];
+
+  void _logout() {
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +46,14 @@ class _NavBarState extends State<NavBar> {
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
             onTap: ((value) {
-              setState(() {
-                _currentIndex = value;
-              });
+              if (value == pages.length - 1) {
+                _logout();
+              } else {
+                setState(() {
+                  _currentIndex = value;
+                });
+              }
+
             }),
             items: [
               BottomNavigationBarItem(
@@ -66,18 +82,6 @@ class _NavBarState extends State<NavBar> {
                   )),
               BottomNavigationBarItem(
                   icon: Image.asset(
-                    'assets/icons/3.1.png',
-                    height: myHeight * 0.03,
-                    color: Colors.grey,
-                  ),
-                  label: '',
-                  activeIcon: Image.asset(
-                    'assets/icons/3.2.png',
-                    height: myHeight * 0.03,
-                    color: Color(0xffFBC700),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Image.asset(
                     'assets/icons/4.1.png',
                     height: myHeight * 0.03,
                     color: Colors.grey,
@@ -88,6 +92,15 @@ class _NavBarState extends State<NavBar> {
                     height: myHeight * 0.03,
                     color: Color(0xffFBC700),
                   )),
+              BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icons/logout.png',
+                    height: myHeight * 0.03,
+                    color: Colors.grey,
+                  ),
+                  label: '',
+              )
+
             ]),
       ),
     );
